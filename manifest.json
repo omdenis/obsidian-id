@@ -1,11 +1,11 @@
 {
-	"id": "obsidian-id",
+	"id": "unique-id",
 	"name": "Unique ID",
-	"version": "0.0.1",
-	"minAppVersion": "0.0.1",
+	"version": "0.0.2",
+	"minAppVersion": "0.0.2",
 	"description": "Add unique ID for newly crated notes.",
 	"author": "Denis Miller aka omdenis",
-	"authorUrl": "https://obsidian.md",	
+	"authorUrl": "https://github.com/omdenis",	
 	"isDesktopOnly": false
 }
 
