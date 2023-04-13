@@ -1,24 +1,9 @@
 import { Plugin, TFile } from 'obsidian';
 
-interface UniqueIdPluginSettings 
-{
-	next_id: string;
-}
-
-const DEFAULT_SETTINGS: UniqueIdPluginSettings = 
-{
-	next_id: '1'
-}
-
 export default class UniqueIdPlugin extends Plugin 
 {
-	settings: UniqueIdPluginSettings;
-
 	async onload() 
 	{
-		await this.loadSettings();
-
-		
 		this.registerEvent(this.app.vault.on('modify', async (file: TFile) => 
 		{	
 			this.updateUniqueId(file);
@@ -28,49 +13,60 @@ export default class UniqueIdPlugin extends Plugin
 		{	
 			setTimeout(async () => { this.updateUniqueId(file); }, 500);
 		}));
-		  
-
-	}
-
-	async loadSettings() 
-	{
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	}
-
-	async saveSettings() 
-	{
-		await this.saveData(this.settings);
 	}
 
 	async updateUniqueId(file: TFile)
 	{
-		const new_id = parseInt(this.settings.next_id) + 1;		
-		
-		// Add meta-data with unique ID
+		if(!await this.is_valid_note(file))
+			return;
+
+		const new_id = await this.get_next_id();
 		let text = await this.app.vault.read(file);
 		if (text.startsWith('---')) 
 		{
-			// Add the new line with ID
 			let lines = text.split('\n');
-
-			// ID is already defined
 			if(lines.length > 3 && lines[1].startsWith("id: "))
 				return;
-				
 			lines.splice(1, 0, `id: ${new_id}`);
 			text = lines.join('\n');
 		}
 		else
 		{
-			// Create the meta-data section and add the unique ID
 			text = `---\nid: ${new_id}\n---\n${text}`;
 		}
+		await this.app.vault.adapter.write(file.path, text);		
+	}
+	
+	async get_next_id() 
+	{
+		let max_id = 0;		
+		for (let file of this.app.vault.getMarkdownFiles()) 
+		{
+			let content = await this.app.vault.cachedRead(file);
+			let match = content.match(/^id:\s*(\d+)/im);
+			if (match && match[1]) 
+			{
+				let id = parseInt(match[1]);
+				if (id > max_id) 
+					max_id = id;
+			}
+		}
+		return max_id + 1;
+	}
 
-		// Save the file with the new ID
-		await this.app.vault.adapter.write(file.path, text);
+	async is_valid_note(file: TFile) 
+	{
+		let text = await this.app.vault.read(file);
+		if(text.toLocaleLowerCase().includes("tp.date.now"))
+			return false;
+
+		let match = text.match(/^id:\s*(\d+)/im);
+		if (match && match[1]) 
+			return false;
 		
-		// Save the next ID
-		this.settings.next_id = new_id.toString();		
-		await this.saveSettings();
+		return true;
 	}
 }
+
+
+
