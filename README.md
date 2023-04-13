@@ -29,6 +29,8 @@ Overall, this plugin is a simple but powerful tool that can help you keep track 
 
 # Bonus
 
+Getting unique ID you could make obsidian like project management tool.
+
 If you're looking for a way to implement a project management system in Obsidian that's similar to those used by Azure or Jira, you might want to consider using the obsidian-db-folder plugin, which is available on https://github.com/RafaelGB/obsidian-db-folder 
 
 ![](images/example1.png)
