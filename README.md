@@ -29,9 +29,11 @@ Overall, this plugin is a simple but powerful tool that can help you keep track 
 
 # Bonus
 
-You could use https://github.com/RafaelGB/obsidian-db-folder to get Azure/Jira-like project management system
+If you're looking for a way to implement a project management system in Obsidian that's similar to those used by Azure or Jira, you might want to consider using the obsidian-db-folder plugin, which is available on https://github.com/RafaelGB/obsidian-db-folder 
 
 ![](images/example1.png)
 
-If you're looking for a way to implement a project management system in Obsidian that's similar to those used by Azure or Jira, you might want to consider using the obsidian-db-folder plugin, which is available on GitHub. This plugin allows you to create a folder structure within your Obsidian vault that's designed specifically for project management. Each folder represents a different project, and within each folder, you can create separate notes for tasks, subtasks, milestones, and more. You can also add tags and other metadata to each note to help keep track of its status and progress. With this setup, you can easily visualize your entire project at a glance, monitor progress, and make adjustments as needed. The obsidian-db-folder plugin is highly customizable, so you can tailor it to fit your specific needs and preferences. Plus, since it's open-source and community-supported, there are plenty of resources and tutorials available to help you get started and troubleshoot any issues you may encounter. Overall, this plugin is a powerful and flexible tool that can help you manage complex projects within Obsidian with ease and efficiency.
+This plugin allows you to create a folder structure within your Obsidian vault that's designed specifically for project management. Each folder represents a different project, and within each folder, you can create separate notes for tasks, subtasks, milestones, and more. You can also add tags and other metadata to each note to help keep track of its status and progress.
+
+With this setup, you can easily visualize your entire project at a glance, monitor progress, and make adjustments as needed. 
 
