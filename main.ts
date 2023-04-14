@@ -36,12 +36,12 @@ export default class UniqueIdPlugin extends Plugin
 								{
 									const new_filename = title.replace(/:/g, "-").replace(/\?/g, " ");
 									const now = (new Date()).toISOString().split('T')[0]; 
-									const sub_task_content = `---\nid: ${next_id}\nref: ${id}\nalias: ${title}\ncreated: ${now}\n---\nup:: [[${active_note.name.replace(".md", "")}]]\n\n`;
-									this.app.vault.create(`notes/tasks/${next_id} ${new_filename}.md`, sub_task_content);
+									const sub_task_content = `---\npriority: 10\nid: ${next_id}\nparent: ${id}\nalias: '${title}'\ncreated: ${now}\n---\nup:: [[${active_note.name.replace(".md", "")}]]\n\n`;
+									this.app.vault.create(`notes/tasks/${next_id} - ${new_filename}.md`, sub_task_content);
 
 									this.app.vault.read(active_note).then(active_note_content =>
 										{
-											const query = "```dataview\nTABLE state\nWHERE ref=" + id + "\n```";
+											const query = "```dataview\nTABLE priority, state\nWHERE parent=" + id + " SORT priority ASC\n```";
 											if(active_note_content.includes(query))
 												return;
 
