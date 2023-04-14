@@ -39,6 +39,9 @@ export default class UniqueIdPlugin extends Plugin
 	
 	async get_next_id() 
 	{
+		// References
+		// * https://marcus.se.net/obsidian-plugin-docs/vault
+
 		let max_id = 0;		
 		for (let file of this.app.vault.getMarkdownFiles()) 
 		{
@@ -60,6 +63,9 @@ export default class UniqueIdPlugin extends Plugin
 		if(text.toLocaleLowerCase().includes("tp.date.now"))
 			return false;
 
+		if(text.length < 6)
+			return false;
+			
 		let match = text.match(/^id:\s*(\d+)/im);
 		if (match && match[1]) 
 			return false;

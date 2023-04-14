@@ -1,9 +1,9 @@
 {
 	"id": "unique-id",
 	"name": "Unique ID",
-	"version": "0.0.4",
-	"minAppVersion": "0.0.4",
-	"description": "Add unique ID for newly crated notes.",
+	"version": "0.0.5",
+	"minAppVersion": "0.0.5",
+	"description": "Add unique ID for notes.",
 	"author": "Denis Miller",
 	"authorUrl": "https://github.com/omdenis",	
 	"isDesktopOnly": false
