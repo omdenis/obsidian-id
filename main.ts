@@ -20,28 +20,17 @@ export default class UniqueIdPlugin extends Plugin
 		if(!await this.is_valid_note(file))
 			return;
 
-		const new_id = await this.get_next_id();
 		let text = await this.app.vault.read(file);
-		if (text.startsWith('---')) 
-		{
-			let lines = text.split('\n');
-			if(lines.length > 3 && lines[1].startsWith("id: "))
-				return;
-			lines.splice(1, 0, `id: ${new_id}`);
-			text = lines.join('\n');
-		}
-		else
-		{
-			text = `---\nid: ${new_id}\n---\n${text}`;
-		}
+		let lines = text.split('\n');
+		const new_id = await this.get_next_id();
+		lines.splice(1, 0, `id: ${new_id}`);
+		text = lines.join('\n');		
+
 		await this.app.vault.adapter.write(file.path, text);		
 	}
 	
 	async get_next_id() 
 	{
-		// References
-		// * https://marcus.se.net/obsidian-plugin-docs/vault
-
 		let max_id = 0;		
 		for (let file of this.app.vault.getMarkdownFiles()) 
 		{
@@ -66,10 +55,17 @@ export default class UniqueIdPlugin extends Plugin
 		if(text.length < 6)
 			return false;
 			
+		if (!text.startsWith('---')) 
+			return false;
+
 		let match = text.match(/^id:\s*(\d+)/im);
 		if (match && match[1]) 
 			return false;
 		
+		let lines = text.split('\n');
+		if(lines.length < 3 && lines[1].startsWith("id: "))
+			return false;
+
 		return true;
 	}
 }
