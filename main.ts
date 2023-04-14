@@ -15,22 +15,17 @@ export default class UniqueIdPlugin extends Plugin
 			setTimeout(async () => { this.updateUniqueId(file); }, 500);
 		}));
 
-
 		this.addCommand({
 			id: 'obsidian-id-create-sub-task-command',
 			name: 'Create sub-task',
 
-			callback: () => {
-				console.log("Hey, you!");
-			  },
-			  
-			editorCallback: (editor: Editor, view: MarkdownView) => 
+			callback: () => 
 			{
-				const file = this.app.workspace.getActiveFile();
-				if (file == null) 
+				const active_note = this.app.workspace.getActiveFile();
+				if (active_note == null) 
 					return;
 
-				this.get_id(file).then(id => 
+				this.get_id(active_note).then(id => 
 					{
 						if (id == null) 
 							return;
@@ -39,18 +34,24 @@ export default class UniqueIdPlugin extends Plugin
 						{
 							this.get_next_id().then(next_id => 
 								{
-									title = title.replace(/:/g, "-").replace(/\?/g, " ");
+									const new_filename = title.replace(/:/g, "-").replace(/\?/g, " ");
+									const now = (new Date()).toISOString().split('T')[0]; 
+									const sub_task_content = `---\nid: ${next_id}\nref: ${id}\nalias: ${title}\ncreated: ${now}\n---\nup:: [[${active_note.name.replace(".md", "")}]]\n\n`;
+									this.app.vault.create(`notes/tasks/${next_id} ${new_filename}.md`, sub_task_content);
 
-									const sub_task_content = `---\nid: ${next_id}\nref: ${id}\ntitle: ${title}\n---\n`;
-									this.app.vault.create(`notes/tasks/${next_id} ${title}.md`, sub_task_content);
+									this.app.vault.read(active_note).then(active_note_content =>
+										{
+											const query = "```dataview\nTABLE state\nWHERE ref=" + id + "\n```";
+											if(active_note_content.includes(query))
+												return;
 
-									const currentPos = editor.getCursor();
-									const currentLine = editor.getLine(currentPos.line);
-									const currentLineEnd = currentLine.length;
-							
-									editor.replaceRange("\n\n```dataview\nTABLE title, state\nWHERE ref=" + id + "\n```", { line: currentPos.line, ch: currentLineEnd });
-								})
-	
+											active_note_content = active_note_content + "\n\n\n" + query;
+											this.app.vault.adapter.write(active_note.path, active_note_content).then(() => 
+											{
+												;
+											});		
+										});
+								})	
 						};
 
 						new CreateSubTaskModal(this.app, onSubmit).open();
@@ -60,8 +61,8 @@ export default class UniqueIdPlugin extends Plugin
 						console.error(error);
 					});
 
+			},
 
-			}
 		});
 	}
 
