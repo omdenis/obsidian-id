@@ -1,4 +1,5 @@
-import { Plugin, TFile } from 'obsidian';
+import { Editor, MarkdownView, Plugin, TFile } from 'obsidian';
+import { CreateSubTaskModal } from 'src/CreateSubTaskDialog';
 
 export default class UniqueIdPlugin extends Plugin 
 {
@@ -13,6 +14,43 @@ export default class UniqueIdPlugin extends Plugin
 		{	
 			setTimeout(async () => { this.updateUniqueId(file); }, 500);
 		}));
+
+
+		this.addCommand({
+			id: 'obsidian-id-create-sub-task-command',
+			name: 'Create sub-task',
+			editorCallback: (editor: Editor, view: MarkdownView) => 
+			{
+				const file = this.app.workspace.getActiveFile();
+				if (file == null) 
+					return;
+
+				this.get_id(file).then(id => 
+					{
+						if (id == null) 
+							return;
+
+						const onSubmit = (title: string) => 
+						{
+							editor.replaceSelection(title);
+							
+							const currentPos = editor.getCursor();
+							const currentLine = editor.getLine(currentPos.line);
+							const currentLineEnd = currentLine.length;
+					
+							editor.replaceRange("\n\n```dataview\nTABLE state\nWHERE ref=" + id + "\n```", { line: currentPos.line, ch: currentLineEnd });
+						};
+
+						new CreateSubTaskModal(this.app, onSubmit).open();
+					})
+					.catch(error => 
+					{
+						console.error(error);
+					});
+
+
+			}
+		});
 	}
 
 	async updateUniqueId(file: TFile)
@@ -34,16 +72,24 @@ export default class UniqueIdPlugin extends Plugin
 		let max_id = 0;		
 		for (let file of this.app.vault.getMarkdownFiles()) 
 		{
-			let content = await this.app.vault.cachedRead(file);
-			let match = content.match(/^id:\s*(\d+)/im);
-			if (match && match[1]) 
-			{
-				let id = parseInt(match[1]);
-				if (id > max_id) 
-					max_id = id;
-			}
+			const id = await this.get_id(file);
+			if(id != null && id > max_id)
+				max_id = id;
 		}
 		return max_id + 1;
+	}
+
+	async get_id(file: TFile)
+	{
+		let content = await this.app.vault.cachedRead(file);
+		let match = content.match(/^id:\s*(\d+)/im);
+		if (match && match[1]) 
+		{
+			let id = parseInt(match[1]);
+			return id;
+		}
+
+		return null;
 	}
 
 	async is_valid_note(file: TFile) 
