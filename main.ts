@@ -19,6 +19,11 @@ export default class UniqueIdPlugin extends Plugin
 		this.addCommand({
 			id: 'obsidian-id-create-sub-task-command',
 			name: 'Create sub-task',
+
+			callback: () => {
+				console.log("Hey, you!");
+			  },
+			  
 			editorCallback: (editor: Editor, view: MarkdownView) => 
 			{
 				const file = this.app.workspace.getActiveFile();
@@ -32,13 +37,20 @@ export default class UniqueIdPlugin extends Plugin
 
 						const onSubmit = (title: string) => 
 						{
-							editor.replaceSelection(title);
+							this.get_next_id().then(next_id => 
+								{
+									title = title.replace(/:/g, "-").replace(/\?/g, " ");
+
+									const sub_task_content = `---\nid: ${next_id}\nref: ${id}\ntitle: ${title}\n---\n`;
+									this.app.vault.create(`notes/tasks/${next_id} ${title}.md`, sub_task_content);
+
+									const currentPos = editor.getCursor();
+									const currentLine = editor.getLine(currentPos.line);
+									const currentLineEnd = currentLine.length;
 							
-							const currentPos = editor.getCursor();
-							const currentLine = editor.getLine(currentPos.line);
-							const currentLineEnd = currentLine.length;
-					
-							editor.replaceRange("\n\n```dataview\nTABLE state\nWHERE ref=" + id + "\n```", { line: currentPos.line, ch: currentLineEnd });
+									editor.replaceRange("\n\n```dataview\nTABLE title, state\nWHERE ref=" + id + "\n```", { line: currentPos.line, ch: currentLineEnd });
+								})
+	
 						};
 
 						new CreateSubTaskModal(this.app, onSubmit).open();
