@@ -1,0 +1,10 @@
+{
+	"id": "unique-id",
+	"name": "Unique ID",
+	"version": "0.1.0",
+	"minAppVersion": "0.15.0",
+	"description": "Add some management mindset to the notes: ID, created and updated meta-data fields",
+	"author": "Denis Miller",
+	"authorUrl": "https://github.com/omdenis",	
+	"isDesktopOnly": false
+}
