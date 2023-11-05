@@ -33,18 +33,18 @@ export default class UniqueIdPlugin extends Plugin {
 				frontmatter["id"] = this.get_next_id();
 			}
 
-			if ("created" in frontmatter) {
-				const value = frontmatter["created"];
-				delete frontmatter["created"];
-				frontmatter["created"] = value;
-			} else {
-				frontmatter["created"] = new Date().toISOString().split("T")[0];
+			const newDate = new Date().toISOString().split("T")[0];
+
+			if (!("created" in frontmatter)) {
+				frontmatter["created"] = newDate;
 			}
 
-			if ("updated" in frontmatter) {
-				delete frontmatter["updated"];
+			if (
+				!("updated" in frontmatter) ||
+				newDate != frontmatter["updated"]
+			) {
+				frontmatter["updated"] = newDate;
 			}
-			frontmatter["updated"] = new Date().toISOString().split("T")[0];
 		});
 	}
 
