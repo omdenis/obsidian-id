@@ -1,8 +1,8 @@
 import { Plugin, TFile } from "obsidian";
 
-export default class HelloWorldPlugin extends Plugin {
+export default class UniqueIdPlugin extends Plugin {
 	async onload() {
-		console.log("loading plugin");
+		console.log("loading Unique-ID plugin");
 
 		this.registerEvent(
 			this.app.vault.on("modify", async (file: TFile) => {
@@ -19,14 +19,16 @@ export default class HelloWorldPlugin extends Plugin {
 		);
 	}
 
-	
 	async onunload() {
-		console.log("unloading plugin");
+		console.log("unloading Unique-ID plugin");
 	}
-	
-	async updateDocument(file: TFile) {
-		this.app.fileManager.processFrontMatter(file, (frontmatter) => {
 
+	async updateDocument(file: TFile) {
+		// const content = await this.app.vault.read(file);
+		// if(!content.startsWith("---"))
+		// 	return;
+
+		this.app.fileManager.processFrontMatter(file, (frontmatter) => {
 			if (!("id" in frontmatter)) {
 				frontmatter["id"] = this.get_next_id();
 			}
@@ -46,19 +48,17 @@ export default class HelloWorldPlugin extends Plugin {
 		});
 	}
 
-	get_next_id() 
-	{
-		let max_id = 0;		
-		for (let file of this.app.vault.getMarkdownFiles()) 
-		{
-			const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
+	get_next_id() {
+		let max_id = 0;
+		for (let file of this.app.vault.getMarkdownFiles()) {
+			const frontmatter =
+				this.app.metadataCache.getFileCache(file)?.frontmatter;
 			if (!frontmatter) continue;
 			if (!frontmatter.id) continue;
 
-			if(frontmatter.id != null && frontmatter.id > max_id)
+			if (frontmatter.id != null && frontmatter.id > max_id)
 				max_id = frontmatter.id;
 		}
 		return max_id + 1;
 	}
-
 }
