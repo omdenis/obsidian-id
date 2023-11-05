@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Plan.md",
+                "file": "Installation.md",
                 "mode": "source",
                 "source": true
               }
@@ -121,7 +121,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Plan.md",
+                "file": "Installation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -138,7 +138,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Plan.md",
+                "file": "Installation.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Plan.md"
+                "file": "Installation.md"
               }
             }
           }
@@ -186,9 +186,9 @@
   },
   "active": "72f45740354b2b7b",
   "lastOpenFiles": [
+    "Plan.md",
     "Features.md",
     "Installation.md",
-    "Plan.md",
     "Untitled.md"
   ]
 }
