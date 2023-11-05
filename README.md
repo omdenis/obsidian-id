@@ -11,6 +11,15 @@ This plugin is designed for use with Obsidian (https://obsidian.md), and it adds
 3. Use the ID to reference the note later.
 4. The plugin will automatically generate new IDs for each new note you create.
 
+Additionally you could use such snippet for daily notes
+
+```dataview
+TABLE 
+WHERE contains(string(created), "<% tp.date.now("YYYY-MM-DD") %>")  OR contains(string(updated), "<% tp.date.now("YYYY-MM-DD") %>")
+SORT file.mtime DESC
+```
+
+
 # How to use
 
 How to Use the Plugin:
