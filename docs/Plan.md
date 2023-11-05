@@ -4,16 +4,19 @@ created: 2023-11-05
 updated: 2023-11-05
 ---
 
-v1
-- [ ] Created
-- [ ] Updated
-- [ ] Unique ID
+0.0.6 - 2023-11-05
+- [x] Created
+- [x] Updated
+- [x] Unique ID
+
+0.0.7
+- [ ] Release pipeline
 - [ ] Settings
 	- [ ] ID field default name 
 	- [ ] created default name
 	- [ ] updated default name
 
-v2
+0.0.8
 - [ ] Apply dateformat from settings
 - [ ] folders filter
 	- [ ] Folder
