@@ -10,13 +10,17 @@ updated: 2023-11-05
 - [x] Unique ID
 
 0.0.7
+- [ ] Apply feedback
 - [ ] Release pipeline
+- [ ] Release
+
+0.0.8
 - [ ] Settings
 	- [ ] ID field default name 
 	- [ ] created default name
 	- [ ] updated default name
 
-0.0.8
+0.0.9
 - [ ] Apply dateformat from settings
 - [ ] folders filter
 	- [ ] Folder
