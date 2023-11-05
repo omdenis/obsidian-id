@@ -24,9 +24,11 @@ export default class UniqueIdPlugin extends Plugin {
 	}
 
 	async updateDocument(file: TFile) {
-		// const content = await this.app.vault.read(file);
-		// if(!content.startsWith("---"))
-		// 	return;
+		// avoid adding to the text snippets and empty files
+
+		const content = await this.app.vault.read(file);
+		if (!content.startsWith("---")) return;
+		if (content.contains("<%")) return;
 
 		this.app.fileManager.processFrontMatter(file, (frontmatter) => {
 			if (!("id" in frontmatter)) {
@@ -39,10 +41,7 @@ export default class UniqueIdPlugin extends Plugin {
 				frontmatter["created"] = newDate;
 			}
 
-			if (
-				!("updated" in frontmatter) ||
-				newDate != frontmatter["updated"]
-			) {
+			if (!("updated" in frontmatter)) {
 				frontmatter["updated"] = newDate;
 			}
 		});
