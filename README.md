@@ -2,7 +2,7 @@
 
 This plugin is designed for use with Obsidian (https://obsidian.md), and it adds an 'id' meta-data to any note. The ID will be automatically incremented the next time a note is created, ensuring that each document can be uniquely identified by its ID. This feature can be quite useful, especially for those who want to easily reference specific notes within their Obsidian vault.
 
-![](images/example2.png)
+![image](https://github.com/omdenis/obsidian-id/assets/52582898/aa6d6792-e41c-48a8-9f38-4f18a59778cf)
 
 # Quick guideline
 
