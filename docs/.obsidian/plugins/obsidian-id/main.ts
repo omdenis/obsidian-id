@@ -25,7 +25,6 @@ export default class UniqueIdPlugin extends Plugin {
 
 	async updateDocument(file: TFile) {
 		// avoid adding to the text snippets and empty files
-
 		const content = await this.app.vault.read(file);
 		if (!content.startsWith("---")) return;
 		if (content.contains("<%")) return;
